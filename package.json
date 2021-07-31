@@ -1,0 +1,19 @@
+{
+  "name": "josm-custom-settings",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "mab <git@ma-b.com>",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "node-fetch": "^2.6.0",
+    "sqlite3": "^5.0.0",
+    "xml2js": "^0.4.23",
+    "xml2json": "^0.12.0"
+  }
+}
