@@ -6,6 +6,7 @@
 import { promises as fs } from 'fs';
 
 import xml2js from 'xml2js';
+import { setTilesScale } from './scale.mjs';
 import { makeStravaImagery } from './strava.mjs';
 
 const josmPrefs = `${process.env.JOSM_PREFS_DIR}preferences.xml`;
@@ -18,6 +19,7 @@ const colors = process.env.COLORS.split(',');
 
   await makeStravaImagery({ activities, colors })(josm);
 
+  setTilesScale(-2)(josm);
   const builder = new xml2js.Builder();
   await fs.writeFile(josmPrefs, builder.buildObject(josm));
 })();
