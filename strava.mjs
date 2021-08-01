@@ -1,9 +1,7 @@
 import { makeTmsURL } from './lib.mjs';
 import { getStravaCookies, makeTms } from './lib.mjs';
 
-export const makeStravaImagery = async (josm, options) => {
-  const { activities, colors } = options;
-
+export const makeStravaImagery = ({ activities, colors }) => async josm => {
   // Extract imagery settings
   const imageries = josm.preferences.maps.find(
     ({ '$': { key } }) => key === 'imagery.entries'

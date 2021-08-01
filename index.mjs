@@ -16,7 +16,7 @@ const colors = process.env.COLORS.split(',');
   const xml = await fs.readFile(josmPrefs);
   const josm = await xml2js.parseStringPromise(xml.toString());
 
-  await makeStravaImagery(josm, { activities, colors });
+  await makeStravaImagery({ activities, colors })(josm);
 
   const builder = new xml2js.Builder();
   await fs.writeFile(josmPrefs, builder.buildObject(josm));
