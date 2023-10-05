@@ -6,19 +6,36 @@ import os from 'os';
 
 export const makeTmsURL = ({ activity, color, kpid, sign, policy }) => [
   `https://heatmap-external-{switch:a,b,c}.strava.com/tiles-auth/${activity}/${color}/{zoom}/{x}/{y}.png?`,
-  `Key-Pair-Id=${kpid}`,
-  `Signature=${sign}`,
-  `Policy=${policy}`,
+  // `Key-Pair-Id=${kpid}`,
+  // `Signature=${sign}`,
+  // `Policy=${policy}`,
 ].join('&');
 
-export const makeTms = (name, url) => ({
+export const makeTmsURLPerso = ({ color = 'purple' } = {}) => [
+  `https://personal-heatmaps-external.strava.com/tiles/11229548/${color}/{zoom}/{x}/{y}@2x.png?`,
+  `filter_type=web_all`,
+  `respect_privacy_zones=false`,
+  `include_everyone=true`,
+  `include_followers_only=true`,
+  `include_only_me=true`,
+].join('&');
+
+export const makeTms = ({
+  name,
+  url,
+  cookies = '',
+  extra = {},
+}) => ({
   tag: [
-    { '$': { key:'min-zoom', value: '3' } },
-    { '$': { key:'max-zoom', value: '15' } },
+    { '$': { key:'min-zoom', value: '9' } },
+    { '$': { key:'max-zoom', value: '14' } },
     { '$': { key:'transparent', value: 'true' } },
     { '$': { key:'name', value: name } },
     { '$': { key:'type', value: 'tms' } },
     { '$': { key:'url', value: url } },
+    { '$': { key:'cookies', value: cookies } },
+    ...Object.entries(extra)
+      .map(([key, value]) => ({ '$': { key, value } })),
   ],
 });
 
