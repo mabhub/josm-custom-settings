@@ -1,7 +1,7 @@
 #!/bin/sh
 ":" //# comment; export NVM_DIR="$HOME/.nvm"
 ":" //# comment; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-":" //# comment; nvm use 18 --silent
+":" //# comment; nvm use 20 --silent
 ":" //# comment; exec /usr/bin/env node --no-warnings -r dotenv/config --max-http-header-size 15000 "$0" "$@"
 
 import { promises as fs } from 'fs';
