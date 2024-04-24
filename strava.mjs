@@ -19,14 +19,14 @@ const COLORS = {
   bluered: '#aa0077',
 };
 
-const makeStravaIcon = async (color = 'hot') => {
+const makeStravaIcon = async ({ id, color }) => {
   try {
-    const png = await fs.readFile(`./strava-${color}.png`);
+    const png = await fs.readFile(`./strava-${id}.png`);
     return `data:image/png;base64,${png.toString('base64')}`;
   } catch (err) {
     const svg = await fs.readFile('./strava.svg');
-    const png = await svg2png.convert(svg, { background: COLORS[color] });
-    await fs.writeFile(`./strava-${color}.png`, png);
+    const png = await svg2png.convert(svg, { background: color });
+    await fs.writeFile(`./strava-${id}.png`, png);
     return `data:image/png;base64,${png.toString('base64')}`;
   }
 };
@@ -66,7 +66,7 @@ export const makeStravaImagery = ({ activities, colors, updatePerso }) => async 
             name: `Strava Global ${activity} (${color})`,
             url: tms,
             cookies: cookiesString,
-            extra: { icon: await makeStravaIcon(color) },
+            // extra: { icon: await makeStravaIcon({ name, color }) },
           })
         );
 
@@ -94,13 +94,45 @@ export const makeStravaImagery = ({ activities, colors, updatePerso }) => async 
 
       console.log(`Cookie: _strava4_session=${cookie.value}`);
 
-      for await (const color of colors) {
-        const tms = makeTmsURLPerso({ color });
+      const persoColors = [
+        {
+          id: 'orange',
+          name: 'Orange',
+          color: 'orange',
+        },
+        {
+          id: 'hot',
+          name: 'Rouge',
+          color: '#ff3300',
+        },
+        {
+          id: 'blue',
+          name: 'Bleu',
+          color: 'blue',
+        },
+        {
+          id: 'bluered',
+          name: 'Bleu/rouge',
+          color: '#8822ff',
+        },
+        {
+          id: 'purple',
+          name: 'Violet',
+          color: 'purple',
+        },
+        {
+          id: 'gray',
+          name: 'Gris',
+          color: 'gray',
+        },
+      ];
+      for await (const { id, color, name } of persoColors) {
+        const tms = makeTmsURLPerso({ color: id });
         imageries.map.push(makeTms({
-          name: `Strava Perso all (${color})`,
+          name: `Strava Perso all (${name})`,
           url: tms,
           cookies: `_strava4_session=${cookie.value}`,
-          extra: { icon: await makeStravaIcon(color) },
+          extra: { icon: await makeStravaIcon({ id, color }) },
         }));
         josm.preferences.tag.push({ '$': { key: `message.imagery.nagPanel.${tms}`, value: 'false' } });
       }
